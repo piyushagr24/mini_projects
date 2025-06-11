@@ -23,7 +23,7 @@ bool solve(Board& b) {
         for (int c = 0; c < N; c++) {
             if (b[r][c] == 0) {
                 // Create array of numbers 1-9 and shuffle them
-                vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+                vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9}; 
                 shuffle(numbers.begin(), numbers.end(), mt19937{static_cast<unsigned>(time(nullptr))});
                 // chooses random number each time instead of 1->9 thus creating unique sudoku each time
                 for (int num : numbers) {
@@ -72,12 +72,10 @@ void getPlayerInfo(string& name, int& emptyCells) {
 
 
 Board generatePuzzle(const Board& sol, int emptyCells) {
-    // 1. Copy the full solution
-    Board puzzle = sol;
-    // 2. Build a list of all 81 indices
-    vector<int> idx(81);
-    iota(idx.begin(), idx.end(), 0); // fill the idx from 0->80
-    // 3. Shuffle and take the first emptyCells to clear
+    Board puzzle = sol; // Copy the full solution
+    vector<int> idx(81); // Build a list of all 81 index
+    iota(idx.begin(), idx.end(), 0); // this (iota)fill the idx from 0->80
+    // Shuffle and take the first emptyCells to clear
     shuffle(idx.begin(), idx.end(), mt19937{ static_cast<unsigned>(time(nullptr)) }); //mt19937 for random numbers , better than rand()
     for (int i = 0; i < emptyCells; ++i) {
         int r = idx[i] / N; // which of the 9 rows?
@@ -88,7 +86,7 @@ Board generatePuzzle(const Board& sol, int emptyCells) {
 }
 
 void printBoardWithIndices(const Board& b) {
-    // 1) Print column headers
+    // Print column index
     cout << "  ";
     for (int c = 0; c < N; c++){
         if(c%3==0) cout << "  ";
@@ -96,27 +94,25 @@ void printBoardWithIndices(const Board& b) {
     }
         cout << "\n  --------+-------+------\n";
 
-    // 2) Print each row with its index
+    // Print each row with its index
     for (int r = 0; r < N; r++) {
-        cout << r << " | "; // row index + separator
+        cout << r << " | "; 
         for (int c = 0; c < N; c++) {
-            // Print '.' for empty (0), or the digit otherwise
+            // Print . for empty cells or the digit 
             char ch = (b[r][c] == 0 ? '.' : char('0'+b[r][c]));
             cout << ch << ' ';
-
-            // Sub-grid vertical separators
+            // vertical separator in b/w for box-like outcome
             if (c % 3 == 2 && c != N-1)
                 cout << "| ";
         }
         cout << "\n";
-
-        // Sub-grid horizontal separators
+        // horizontal separator
         if (r % 3 == 2 && r != N-1)
             cout << "  --------+-------+------\n";
     }
 }
 
-// Only allow selecting cells that were empty at the start
+// only to select cells that were empty from start
 void getPlayerMove(int& row, int& col, const Board& puzzle,const Board& initial) {
     while (true) {
         cout << "Select a cell to fill/change (row col): ";
@@ -127,7 +123,7 @@ void getPlayerMove(int& row, int& col, const Board& puzzle,const Board& initial)
     }
 }
 
-// Now allows 0 (clear) or 1–9 (fill)
+// fill selected pos with num
 int getPlayerDigit() {
     int num;
     while (true) {
@@ -139,9 +135,10 @@ int getPlayerDigit() {
     }
 }
 
-void playGame(Board puzzle, const Board& initial) {
-    int mistakes = 0;
-    int remaining = 0;
+// final func
+bool playGame(Board puzzle, const Board& initial) {
+    int mistakes = 0; // no of mistakes made
+    int remaining = 0; // number of empty cells left
     for (auto& row : initial)
         for (int v : row)
             if (v == 0) 
@@ -159,16 +156,15 @@ void playGame(Board puzzle, const Board& initial) {
         val = getPlayerDigit();
 
         if (val == 0) {
-            // clear the cell if it was previously filled
+            // clear the cell only if it was previously filled 
             if (puzzle[r][c] != 0) {
                 puzzle[r][c] = 0;
-                remaining++;
+                remaining++; // increamenting only if it was previously filled
             }
         }
-        else if (isValid(puzzle, r, c, val)) {
-            // if filling a previously empty cell, decrement remaining
+        else if (isValid(puzzle, r, c, val)) {// if val!= 0 and is a valid move
             if (puzzle[r][c] == 0) 
-                remaining--;
+                remaining--; // decrementing only if it was an empty cell
             puzzle[r][c] = val;
         }
         else {
@@ -176,26 +172,35 @@ void playGame(Board puzzle, const Board& initial) {
             cout << "That move conflicts! Try again!\n\n";
         }
     }
-
     if (remaining == 0)
-        cout << "Congratulations! You filled the board!\n";
+        return true;
     else
-        cout << "Out of mistakes! Game over.\n";
+        return false;
 }
 
 int main() {
-    // 1) Build a full solution
-    Board solution(N, vector<int>(N, 0));
-    solve(solution);
+    Board solution(N, vector<int>(N, 0)); 
+    solve(solution);//generate a full sol thr a randomiser
 
-    // 2) Greet & get player info
     greetPlayer();
     string name;
     int emptyCells;
     getPlayerInfo(name, emptyCells);
 
     Board puzzle = generatePuzzle(solution, emptyCells);
-    Board initialPuzzle = puzzle;  // save clues
-    playGame(puzzle, initialPuzzle);
+    Board initialPuzzle = puzzle;  // save clues -> to disable editting clues
+    if (playGame(puzzle, initialPuzzle))
+        cout << "Congratulations " << name <<"! You filled the board!\n";
+    else
+        cout << "Out of mistakes! Game over.\n";
     return 0;
 }
+
+// Score System
+/* Max score will be the number of empty cells 
+score will be based on number of moves
+if moves == empty cells in start , them max score
+else find the difference and deduct it from max score
+*/
+
+// Leader Board?
