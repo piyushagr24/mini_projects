@@ -9,7 +9,7 @@ After the word is revealed it also provides its meaning which helps to improve o
 
 ## Features
 
-- Interactive gameplay with keyboard or on-screen input
+- Interactive gameplay with keyboard input
 - Visual feedback for each guess (correct, present, absent)
 - Customizable word list
 - Simple and clean UI
@@ -23,7 +23,7 @@ After the word is revealed it also provides its meaning which helps to improve o
 
 ## Usage
 
-- Enter your guess using the keyboard or on-screen buttons.
+- Enter your guess using the keyboard buttons.
 - Press Enter to submit your guess.
 - Use the feedback to refine your next guess.
 - Try to guess the word within the allowed number of attempts.
