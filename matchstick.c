@@ -30,7 +30,7 @@ int main() {
         m -= c;
         printf("Number of matchsticks left: %d\n\n", m);
         if (m == 1) {
-            printf("Only one matchstick left. You forced to pick it up.\n");
+            printf("Only one matchstick left. You are forced to pick it up.\n");
             printf("You Lose!\n");
             break;
         }
