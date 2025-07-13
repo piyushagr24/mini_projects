@@ -12,10 +12,9 @@ After the word is revealed it also provides its meaning which helps to improve o
 - Interactive gameplay with keyboard input
 - Visual feedback for each guess (correct, present, absent)
 - Customizable word list
-- Simple and clean UI
+- Simple and clean terminal UI
 - Implement Wordle game with dictionary integration and meaning lookup
 - Added functionality to fetch word meanings from an external API.
-- Implemented game logic for a 5-letter word guessing game.
 - Included color-coded feedback for user guesses (green for correct letters in the right position, yellow for correct letters in the wrong position, grey for incorrect letters).
 - Created a keyboard display to show the status of each letter.
 - Added support for loading words from external text files for guesses and answers.
@@ -27,6 +26,11 @@ After the word is revealed it also provides its meaning which helps to improve o
 - Press Enter to submit your guess.
 - Use the feedback to refine your next guess.
 - Try to guess the word within the allowed number of attempts.
+
+## TODO
+
+- Add a feedback mechanism after each invalid word to add the word in the valid list if it was valid.
+- Add feedback mechanism to remove the word from the list it was too random as the words should be simple.
 
 ## License
 
